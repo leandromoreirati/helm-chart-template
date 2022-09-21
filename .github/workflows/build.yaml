@@ -17,7 +17,7 @@ jobs:
       
       - name: Generate Helm Package
         run: |
-          tar zcvf helm-charts-generic-$(helm_chart_version).tgz -C charts ./
+          tar zcvf helm-charts-generic-${helm_chart_version}.tgz -C charts ./
 
       - uses: actions/upload-artifact@v3
         with:
