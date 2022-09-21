@@ -22,11 +22,11 @@ jobs:
 
       - name: Generate Helm Package
         run: |
-          tar zcvf helm-charts-generic-${helm_chart_version}.tgz -C charts ./
+          tar zcvf helm-charts-generic-${helm_chart}.tgz -C charts ./
           ls -l
 
       - uses: actions/upload-artifact@v3
         with:
-          name: helm-charts-generic-${helm_chart_version}.tgz
-          path: helm-charts-generic-${helm_chart_version}.tgz
+          name: helm-charts-generic-${$helm_chart}.tgz
+          path: helm-charts-generic-${$helm_chart}.tgz
           
