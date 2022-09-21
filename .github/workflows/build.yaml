@@ -7,14 +7,15 @@ jobs:
   build-helm-package:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+      
       - name: Generate Helm Version
         run: |
           echo "::set-output name=helm_chart_version::$(cat charts/Chart.yaml | grep "version:" | awk -F ":" '{print$2}' | sed 's/ //g'))"
           echo $helm_chart_version
 
-      - name: Checkout
-        uses: actions/checkout@v3
-      
       - name: Generate Helm Package
         run: |
           tar zcvf helm-charts-generic-${helm_chart_version}.tgz -C charts ./
