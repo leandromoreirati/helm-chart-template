@@ -13,7 +13,7 @@ jobs:
       
       - name: Generate Helm Version
         run: |
-          echo "::set-output name=helm_chart_version::$(cat charts/Chart.yaml | grep "version:" | awk -F ":" '{print$2}' | sed 's/ //g'))"
+          echo "::set-output name=helm_chart_version::$(cat charts/Chart.yaml | grep "version:" | awk -F ":" '{print$2}' | sed 's/ //g')"
           echo $helm_chart_version
 
       - name: Generate Helm Package
