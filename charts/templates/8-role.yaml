@@ -1,0 +1,6 @@
+{{- if .Values.role }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {{- toYaml .Values.role.metadata | nindent 2 }}
+rules: {{- toYaml .Values.role.rules | nindent 2 }}
+{{- end }}

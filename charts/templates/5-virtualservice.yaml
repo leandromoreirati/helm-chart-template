@@ -1,0 +1,24 @@
+{{- $env_stage := .Values.application.environment }} 
+{{- if .Values.virtualService -}}
+
+{{- $obj := .Values.virtualService -}}
+{{- $tp := typeOf .Values.virtualService }}
+
+{{- if eq $tp "map[string]interface {}"}}
+{{- $virtualservices := get .Values.virtualService $env_stage }}
+{{- $obj = $virtualservices }}
+{{- end }}
+
+{{- range $obj }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata: {{- toYaml .metadata | nindent 2 }}
+spec:
+  gateways:
+  - {{ .gateways }}
+  hosts:
+  - {{ .hosts }}
+  http:
+{{ toYaml .httpRouteRules | indent 2 }}
+{{- end}}
+{{- end}}

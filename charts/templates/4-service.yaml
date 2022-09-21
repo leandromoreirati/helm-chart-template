@@ -1,0 +1,16 @@
+{{ - if .Values.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.application.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    component: {{ .Values.application.name }}
+spec:
+  ports:
+    - name: {{ .Values.service.portName }}
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  selector:
+    component: {{ .Values.application.name }}
+{{ - end }}

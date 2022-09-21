@@ -1,0 +1,27 @@
+{{- $env_stage := .Values.application.environment }} 
+{{- if .Values.gateway }}
+
+{{- $obj := .Values.gateway -}}
+{{- $tp := typeOf .Values.gateway }}
+
+{{- if eq $tp "map[string]interface {}"}}
+{{- $gateways := get .Values.gateway $env_stage }}
+{{- $obj = $gateways }}
+{{- end }}
+
+{{- range $obj }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata: {{- toYaml .metadata | nindent 2 }}
+spec: 
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: {{ .number }}
+      name: {{ .name }}
+      protocol: {{ .protocol }}
+    hosts:
+    - {{ .hosts }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.application.name }} 
+  namespace: {{ .Values.namespace.name }}  
+spec:
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: {{ .Values.application.name }} 
+  template:
+    metadata:
+      labels:
+        component: {{ .Values.application.name }} 
+    spec:
+
+      {{ - if .Values.initContainers }}
+      initContainers:
+{{ toYaml .Values.initContainers | indent 6 }}
+      {{ - end }}
+
+      containers:
+      - name: {{ .Values.application.name }} 
+        image: "{{ required "Missing container repository" .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: Always
+        ports:
+          - containerPort: {{ .Values.application.port }}
+
+        # Environment Variables from configMap
+        {{ - if .Values.configMap }}          
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configMap.name }}          
+        {{ - end }}
+
+        # Environment Variables from secret
+        {{ - if .Values.secret }}          
+        - secretRef:
+            name: {{ .Values.secret.name }}          
+        {{ - end }}
+
+        {{ - if .Values.resources }}
+        resources:          
+{{ toYaml .Values.resources | indent 10 }}
+        {{ - end }}
+
+        # healthchecks livenessProbe ; httpGet, tcpSocket or exec
+        {{ - if .Values.livenessProbe }}
+        livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 10 }}
+        {{ - end }}
+
+        # healthchecks readinessProbe  ; httpGet, tcpSocket or exec
+        {{ - if .Values.readinessProbe }}
+        readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 10 }}
+        {{ - end }}
+
+      {{ - if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+      {{ - end }}
+
+      {{ - if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{ - end }}
+
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{ - end }}
