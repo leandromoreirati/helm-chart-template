@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+
       - name: Checkout
         uses: actions/checkout@v3
       
@@ -30,6 +31,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: helm-charts-$helm_chart_version.tgz
-          path: helm-charts-$helm_chart_version.tgz
+          name: helm-charts-${{ steps.generate_helm_version.outputs.helm_chart_version }}.tgz
+          path: helm-charts-${{ steps.generate_helm_version.outputs.helm_chart_version }}.tgz
           
