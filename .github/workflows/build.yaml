@@ -29,6 +29,13 @@ jobs:
           tar zcvf helm-charts-$helm_chart_version.tgz -C charts ./
           ls -l
 
+      - name: Commit
+        run: |
+          #git config --global user.name 'Your Name'
+          #git config --global user.email 'your-username@users.noreply.github.com'
+          git commit -am "Automated artifact commit"
+          git push
+
       - uses: actions/upload-artifact@v3
         with:
           name: helm-charts-${{ steps.generate_helm_version.outputs.helm_chart_version }}.tgz
