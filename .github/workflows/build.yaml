@@ -25,10 +25,10 @@ jobs:
           echo ${{ steps.generate_helm_version.outputs.helm_chart_version }}
           export helm_chart_version=${{ steps.generate_helm_version.outputs.helm_chart_version }}
           echo $helm_chart_version
-          tar zcvf helm-charts.tgz -C charts ./
+          tar zcvf helm-charts-$helm_chart_version.tgz -C charts ./
 
       - uses: actions/upload-artifact@v3
         with:
-          name: helm-charts.tgz
-          path: helm-charts.tgz
+          name: helm-charts-$helm_chart_version.tgz
+          path: helm-charts-$helm_chart_version.tgz
           
