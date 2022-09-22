@@ -26,6 +26,7 @@ jobs:
           export helm_chart_version=${{ steps.generate_helm_version.outputs.helm_chart_version }}
           echo $helm_chart_version
           tar zcvf helm-charts-$helm_chart_version.tgz -C charts ./
+          ls -l
 
       - uses: actions/upload-artifact@v3
         with:
